@@ -6,8 +6,17 @@
   padding: 20px;
 }
 .container {
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
+  border-radius: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+
+.filterBox{
+  /* align-items: center; */
+  margin: auto;
+}
+
+
 
 @media all and (min-width: 651px) and (max-width: 1024px) {
   .userCard {

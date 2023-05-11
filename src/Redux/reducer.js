@@ -13,7 +13,7 @@ const initialState = {
     error: '',
     pageFilter: {
         pageNumber: 1,
-        limit: 10,
+        limit: 20,
         totalPages: 0,
     }
 };
@@ -42,4 +42,4 @@ const reducer = (state = initialState, { type, payload }) => {
     }
 };
 
-export default reducer;
+export { reducer };

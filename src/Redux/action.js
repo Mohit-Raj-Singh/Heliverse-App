@@ -18,16 +18,16 @@ export const userCardError = () => ({
 
 
 
-export const getAllUsers = (dispatch) => {
-    dispatch(userCardRequest());
-    axios.get("http://localhost:8080/users")
-        .then((res) => {
-            dispatch(userCardSuccess(res.data))
-        })
-        .catch((err) => {
-            dispatch(userCardError())
-        })
-}
+// export const getAllUsers = (dispatch) => {
+//     dispatch(userCardRequest());
+//     axios.get("http://localhost:8080/users")
+//         .then((res) => {
+//             dispatch(userCardSuccess(res.data))
+//         })
+//         .catch((err) => {
+//             dispatch(userCardError())
+//         })
+// }
 
 
 
@@ -35,7 +35,7 @@ export const getAllUsers = (dispatch) => {
 //     console.log(limit);
 //     dispatch(userCardRequest())
 //     // axios.get(`https://snapdeal-productapi.onrender.com/mens?_page=${page}&_limit=${limit}&q=${query}`, param)
-//     axios.get(`http://localhost:8080/users?_page=${page}&_limit=${limit}&q=${query}`, param)
+//     axios.get(`http://localhost:8080/users?_page=${page}&_limit=${limit}`, param)
 //     .then((res)=> {
         
 //         dispatch(userCardSuccess(res.data))
@@ -46,14 +46,13 @@ export const getAllUsers = (dispatch) => {
 
 
 
-// export const getData =(param,limit,page,query)=>(dispatch)=>{
-//     console.log(limit);
-//     dispatch(getProductsRequest())
-//     axios.get(`https://snapdeal-productapi.onrender.com/mens?_page=${page}&_limit=${limit}&q=${query}`, param)
-//     .then((res)=> {
-        
-//         dispatch(getProductsSuccess(res.data))
-//         console.log(res.data)
-//     })
-//     .catch((err)=> dispatch(getProductsFailure()))
-// }
+export const getAllUsers=(params)=>async (dispatch)=>{
+    dispatch(userCardRequest())
+    try {
+        const r = await axios.get(`http://localhost:8080/users`,params)
+        dispatch(userCardSuccess(r.data))
+    } catch (err) {
+        dispatch(userCardError())
+    }
+    
+}

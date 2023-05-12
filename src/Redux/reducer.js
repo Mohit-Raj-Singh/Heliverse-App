@@ -1,22 +1,13 @@
 import * as types from "./actionType";
 
-// const initialState = {
-//     users: [],
-//     loading: false,
-//     error: ''
-// };
-
-
 const initialState = {
     users: [],
     loading: false,
-    error: '',
-    pageFilter: {
-        pageNumber: 1,
-        limit: 20,
-        totalPages: 0,
-    }
+    error: ''
 };
+
+
+
 
 const reducer = (state = initialState, { type, payload }) => {
     switch (type) {
@@ -43,3 +34,37 @@ const reducer = (state = initialState, { type, payload }) => {
 };
 
 export { reducer };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const initialState = {
+//     page: 1, 
+//     cards: [], 
+//     cardsPerPage: 20
+// };
+
+// const reducer = (state = initialState, action) => {
+//     switch (action.type) {
+//         case 'SET_PAGE':
+//             return {
+//                 ...state,
+//                 page: action.payload
+//             };
+        
+//         default:
+//             return state;
+//     }
+// };
+
+// export { reducer };

@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "../Redux/action";
+import { getAllUsers, userCardSuccess } from "../Redux/action";
 import Pagination from "./Pagination";
 import styles from "./UserCard.module.css";
+import axios from "axios";
+import {
+  Box,
+  Flex,
+  Image,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
+import { IoSearchSharp } from "react-icons/io5";
 
 const UserCard = () => {
   const [page, setPage] = useState(1);
@@ -10,42 +21,143 @@ const UserCard = () => {
   const dispatch = useDispatch();
   console.log(user);
 
-  // const [pageFilter, setPageFilter] = useState({
-  //   pageNumber: 1,
-  //   limit: 20,
-  //   totalPages: 0,
-  // });
-  // const { pageNumber, limit } = pageFilter;
+  const ref = useRef(null);
+  const [hiddenDiv, setHiddenDiv] = useState(false);
+  const [data, setData] = useState([]);
+  const [searchVal, setSearchVal] = useState("");
 
-  // useEffect(() => {
-  //   getAllUsers(dispatch);
-  // }, []);
+  //search
 
-  // useEffect(() => {
-  //   dispatch(getAllUsers(limit, pageNumber));
-  // }, [limit, pageNumber]);
+  useEffect(() => {
+    fetchData(searchVal);
+  }, [searchVal]);
+
+  const fetchData = (searchVal) => {
+    let full_name = searchVal.split(" ");
+    fetch(
+      `http://localhost:8080/users?first_name=${full_name[0]}&?last_name=${full_name[1]}`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res);
+        console.log(res, " search input data after fetched ");
+      });
+  };
+
+  const debounce = (fn, timeout) => {
+    let timerid;
+    return () => {
+      clearTimeout(timerid);
+      timerid = setTimeout(() => {
+        fn();
+      }, timeout);
+    };
+  };
+  const handleinput = debounce(() => {
+    const val = ref.current.value;
+    console.log(" event val check in debounce ", val);
+    setHiddenDiv(true);
+    setSearchVal(val);
+  }, 500);
+
+  window.addEventListener("click", (e) => {
+    console.log(e.target.id, " check window ");
+    if (e.target.id !== "inputBox") {
+      setHiddenDiv(false);
+    }
+  });
 
   useEffect(() => {
     if (user.length === 0) {
       const limit = 20;
       const getUsersParams = {
         params: {
-          _page: page,
           _limit: limit,
+          _page: page,
         },
       };
 
       dispatch(getAllUsers(getUsersParams));
+      console.log(page);
     }
   }, [dispatch, page]);
+
+  // useEffect(() => {
+  //   fetch(`https://mock4-server-uoq7.onrender.com/users?page=${page}`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       dispatch(userCardSuccess(data));
+  //     });
+  // }, [page, dispatch]);
 
   return (
     <>
       <h2>Users List</h2>
-      <div className={styles.filterBox}>
-        <input type="text" />
-        <button>Search</button>
-      </div>
+
+      {/* =======search======== */}
+
+      <Box w="34%" pos={"relative"}>
+        <InputGroup>
+          <Input
+            placeholder="Search"
+            bg="white"
+            w="100%"
+            borderRadius="2px"
+            h="36px"
+            fontSize="14px"
+            ref={ref}
+            onInput={handleinput}
+            id="inputBox"
+          />
+
+          <InputRightElement
+            pos="absolute"
+            zIndex="10"
+            children={
+              <IoSearchSharp
+                color="black"
+                cursor="pointer"
+                fontSize="23px"
+                fontWeight="bold"
+              />
+            }
+          />
+        </InputGroup>
+        <Box
+          display={hiddenDiv ? "" : "none"}
+          pos={"absolute"}
+          zIndex={"10"}
+          maxH="320px"
+          overflowY={"auto"}
+          borderRadius="0 0 2px 2px"
+          borderTop={"1px solid #e0e0e0"}
+          w="100%"
+          bg="#fff"
+          boxShadow={"2px 3px 5px -1px rgb(0 0 0 / 50%)"}
+        >
+          {data.map((item, index) => (
+            <Box key={index}>
+              <NavLink to={`/searchResult/${item.id}`}>
+                <Flex
+                  gap={2}
+                  p="10px 25px"
+                  m="10px 0"
+                  align={"center"}
+                  cursor="pointer"
+                  _hover={{ bg: "#F5F8FF" }}
+                >
+                  <Box maxH="32px" w="32px">
+                    <Image maxH="30px" maxW="32px" src={item.avatar} />
+                  </Box>
+                  <Box color={"#212121"}>
+                    {item.first_name + " " + item.last_name}
+                  </Box>
+                </Flex>
+              </NavLink>
+            </Box>
+          ))}
+        </Box>
+      </Box>
 
       <select name="" id="">
         <option value="all">All</option>

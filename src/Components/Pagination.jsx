@@ -27,3 +27,5 @@ const Pagination = ({ current, total, onChange }) => {
 };
 
 export default Pagination;
+
+

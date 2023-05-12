@@ -12,8 +12,9 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
+import Filter from "./Filter";
 
 const UserCard = () => {
   const [page, setPage] = useState(1);
@@ -26,6 +27,10 @@ const UserCard = () => {
   const [data, setData] = useState([]);
   const [searchVal, setSearchVal] = useState("");
 
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const initQuery = searchParams.get("q");
+
   //search
 
   useEffect(() => {
@@ -35,7 +40,7 @@ const UserCard = () => {
   const fetchData = (searchVal) => {
     let full_name = searchVal.split(" ");
     fetch(
-      `http://localhost:8080/users?first_name=${full_name[0]}&?last_name=${full_name[1]}`
+      `https://mock4-server-uoq7.onrender.com/users?first_name=${full_name[0]}&?last_name=${full_name[1]}`
     )
       .then((res) => res.json())
       .then((res) => {
@@ -68,10 +73,17 @@ const UserCard = () => {
   });
 
   useEffect(() => {
-    if (user.length === 0) {
+    if (user.length === 0 || location || initQuery) {
+      const gender = searchParams.getAll("gender");
+      const domain = searchParams.getAll("domain");
+      const available = searchParams.getAll("available");
+      const q = searchParams.get("q");
       const limit = 20;
       const getUsersParams = {
         params: {
+          gender,
+          domain,
+          available,
           _limit: limit,
           _page: page,
         },
@@ -80,19 +92,15 @@ const UserCard = () => {
       dispatch(getAllUsers(getUsersParams));
       console.log(page);
     }
-  }, [dispatch, page]);
-
-  // useEffect(() => {
-  //   fetch(`https://mock4-server-uoq7.onrender.com/users?page=${page}`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       dispatch(userCardSuccess(data));
-  //     });
-  // }, [page, dispatch]);
+  }, [dispatch, location.search, searchParams, initQuery, page]);
 
   return (
     <>
       <h2>Users List</h2>
+
+      {/* =======Filter======== */}
+
+      <Filter />
 
       {/* =======search======== */}
 
@@ -159,12 +167,6 @@ const UserCard = () => {
         </Box>
       </Box>
 
-      <select name="" id="">
-        <option value="all">All</option>
-        <option value="domain">Domain</option>
-        <option value="gender">Gender</option>
-        <option value="Availability">Availability</option>
-      </select>
       <div className={styles.userCard}>
         {user.length > 0 &&
           user.map((el) => (

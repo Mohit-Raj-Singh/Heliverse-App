@@ -2,16 +2,15 @@ import React from "react";
 import {
   Box,
   VStack,
-  Radio,
-  RadioGroup,
   Divider,
   Text,
   CheckboxGroup,
   Checkbox,
-  HStack,
+  Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,6 +24,8 @@ const Filter = () => {
   const initAvailable = searchParams.getAll("available");
   const [available, setAvailable] = useState(initAvailable || true);
 
+  const initNotAvailable = searchParams.getAll("available");
+  const [notAvailable, setNotAvailable] = useState(initNotAvailable || false);
 
   const initQuery = searchParams.get("q");
   const [q, setQuery] = useState(initQuery || "");
@@ -38,7 +39,11 @@ const Filter = () => {
   };
 
   const handleAvailable = (el) => {
-    setAvailable(el)
+    setAvailable(el);
+  };
+
+  const handleNonAvailable = (el) => {
+    setNotAvailable(el);
   };
 
   useEffect(() => {
@@ -46,7 +51,7 @@ const Filter = () => {
     gender && (params.gender = gender);
     domain && (params.domain = domain);
     available && (params.available = available);
-    // notAvailable && (params.available = notAvailable);
+
     q && (params.q = q);
     setSearchParams(params);
   }, [
@@ -58,24 +63,34 @@ const Filter = () => {
     setAvailable,
     q,
     setQuery,
+    setNotAvailable,
   ]);
 
   return (
     <>
-      <h1 style={{ fontSize: "25px" }}>Filter Here</h1>
       <VStack
         alignItems={"flex-start"}
         spacing={1}
-        position={"sticky"}
+        position={"fixed"}
         top={"7%"}
         bottom={"1000px"}
+        marginLeft={"20px"}
+        marginTop={"30px"}
       >
-        <HStack mt={"8px"} pl={4} fontWeight={700}>
-          FILTERS
-        </HStack>
+        <SearchBar />
 
         <Divider />
+        <Button
+          backgroundColor={"teal"}
+          borderRadius={"10px"}
+          padding={"20px 25px"}
+          marginTop="50px"
+        >
+          <Link to="/teamlist">Team List</Link>
+        </Button>
+
         <Divider />
+
 
         <Box pl={4}>
           <Text
@@ -151,10 +166,23 @@ const Filter = () => {
           >
             <VStack alignItems={"flex-start"} mt={1} spacing={1}>
               <Checkbox value={true}>Available</Checkbox>
+            </VStack>
+          </CheckboxGroup>
+
+          <CheckboxGroup
+            size={"sm"}
+            colorScheme={"pink"}
+            onChange={handleNonAvailable}
+            defaultValue={notAvailable}
+          >
+            <VStack alignItems={"flex-start"} mt={1} spacing={1}>
               <Checkbox value={false}>Not-Available</Checkbox>
             </VStack>
           </CheckboxGroup>
         </Box>
+        <Divider />
+
+
         <Divider />
       </VStack>
     </>

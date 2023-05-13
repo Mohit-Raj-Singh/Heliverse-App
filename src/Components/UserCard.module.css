@@ -6,39 +6,108 @@
   padding: 20px;
 }
 .container {
-  /* border: 1px solid blue; */
   border-radius: 20px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 10px;
 }
-
-.filterBox{
-  /* align-items: center; */
+img {
   margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-/* button{
+.addTeam {
   background-color: black;
-  color: rebeccapurple;
+  color: rgb(253, 250, 250);
   border-color: brown;
-} */
-
-
-@media all and (min-width: 651px) and (max-width: 1024px) {
-  .userCard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    gap: 20px;
-    padding: 20px;
-  }
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.filterandCards {
+  display: flex;
+}
+.nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: 100%;
+  border-radius: 15px;
+  height: 75px;
+  position: sticky;
+  top: 0px;
+  bottom: 200px;
+  left: 0px;
+  right: 200px;
+  background-color: brown;
+  color: aliceblue;
+}
+.teamButton {
+  background-color: teal;
+  border-radius: 10px;
+  padding: 5px 10px;
+  color: aliceblue;
+}
+.box {
+  width: 100%;
+  /* background-color: blue; */
+  height: 75px;
+  border: 1px solid black;
+}
+.pageButton {
+  background-color: crimson;
+  padding: 10px;
+  /* display: block; */
+  margin: 5px 10px;
+}
+.paginationButton {
+  background-color: rgb(16, 5, 68);
+  color: aliceblue;
+  padding: 5px 10px;
+  margin: 5px 10px;
+  border-radius: 10px;
+  /* margin: auto; */
+}
+.pageBox {
+  margin: auto;
+  margin: 10px 20px;
 }
 
-@media all and (min-width: 320px) and (max-width: 652px) {
+@media all and (min-width: 651px) and (max-width: 1071px) {
   .userCard {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
-    gap: 20px;
-    padding: 20px;
+    /* gap: 20px;
+    padding: 20px; */
+  }
+  .nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .box {
+    width: 100%;
+  }
+}
+
+@media all and (min-width: 320px) and (max-width: 650px) {
+  .userCard {
+    width: 70%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: auto;
+    /* gap: 20px;
+    padding: 20px; */
+  }
+  .nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .box {
+    width: 100%;
   }
 }

@@ -3,6 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import UserCard from "./UserCard";
 import { SearchResult } from "./SearchResult";
 import { TeamList } from "./TeamList";
+import Page from "./Page";
+
+
 
 export const AllRoutes = () => {
   return (

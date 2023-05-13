@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./UserCard.module.css"
+import SideBar from "./SideBar";
 
 export const SearchResult = () => {
   const { id } = useParams();
@@ -8,7 +9,7 @@ export const SearchResult = () => {
 
   const showData = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/users?id=${id}`);
+      const res = await fetch(`https://mock4-server-uoq7.onrender.com/users?id=${id}`);
       const res2 = await res.json();
       console.log(res2);
       setViewData([...res2]);
@@ -22,6 +23,8 @@ export const SearchResult = () => {
   }, [id]);
 
   return (
+    <div className={styles.filterandCards}>
+    <SideBar />
     <div>
       {viewData.map((el) => (
         <div key={el.id} className={styles.container}>
@@ -33,6 +36,7 @@ export const SearchResult = () => {
           <p>{el.available}</p>
         </div>
       ))}
+    </div>
     </div>
   );
 };

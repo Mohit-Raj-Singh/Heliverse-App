@@ -1,20 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers, userCardSuccess } from "../Redux/action";
-import Pagination from "./Pagination";
+import { getAllUsers } from "../Redux/action";
 import styles from "./UserCard.module.css";
-import axios from "axios";
-import {
-  Box,
-  Flex,
-  Image,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
-import { NavLink, useLocation, useSearchParams } from "react-router-dom";
-import { IoSearchSharp } from "react-icons/io5";
-import Filter from "./Filter";
+import { Link, NavLink, useLocation, useSearchParams } from "react-router-dom";
+import SideBar from "./SideBar";
+import Page from "./Page";
 
 const UserCard = () => {
   const [page, setPage] = useState(1);
@@ -31,23 +21,7 @@ const UserCard = () => {
   const [searchParams] = useSearchParams();
   const initQuery = searchParams.get("q");
 
-  //search
 
-  useEffect(() => {
-    fetchData(searchVal);
-  }, [searchVal]);
-
-  const fetchData = (searchVal) => {
-    let full_name = searchVal.split(" ");
-    fetch(
-      `https://mock4-server-uoq7.onrender.com/users?first_name=${full_name[0]}&?last_name=${full_name[1]}`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res);
-        console.log(res, " search input data after fetched ");
-      });
-  };
 
   const debounce = (fn, timeout) => {
     let timerid;
@@ -110,128 +84,78 @@ const UserCard = () => {
   }, [team]);
 
   function checkID(alreadyID) {
-    for (let i = 0; i < teamArray.length; i++) {
-      if (teamArray[i].id == alreadyID) {
-        return true;
-      } else {
+    for (let i = 0; i < team.length; i++) {
+      if (team[i].id == alreadyID) {
         return false;
+      } else {
+        return true;
       }
     }
   }
 
   function returnDomain(checkDomain) {
-    if (teamArray[0].domain == checkDomain) {
+    if (team[0].domain == checkDomain) {
       return true;
     }
     return false;
   }
 
+  console.log(checkID(2));
+
   const handleAddTeam = (index) => {
     if (index.available == true) {
-      if(returnDomain){
-      setTeam([...team, index]);
-      alert("ccc");      }
-      setTeam([...team, index]);
-      alert("ccc");
+      if (team.length === 0) {
+        setTeam([...team, index]);
+        alert("Added Sucessfully.");
+      } else {
+        if (returnDomain(index.domain)) {
+          setTeam([...team, index]);
+          alert("Added Sucessfully.");
+        } else {
+          alert("Domain not matched");
+        }
+      }
     } else {
-      alert("not availbale");
+      alert("User is not availbale");
     }
   };
 
   return (
-    <>
-      <h2>Users List</h2>
+    <div>
+      <div className={styles.filterandCards}>
+        <div>
+          <SideBar />
+        </div>
 
-      {/* =======Filter======== */}
-
-      <Filter />
-
-      {/* =======search======== */}
-
-      <Box w="34%" pos={"relative"}>
-        <InputGroup>
-          <Input
-            placeholder="Search"
-            bg="white"
-            w="100%"
-            borderRadius="2px"
-            h="36px"
-            fontSize="14px"
-            ref={ref}
-            onInput={handleinput}
-            id="inputBox"
-          />
-
-          <InputRightElement
-            pos="absolute"
-            zIndex="10"
-            children={
-              <IoSearchSharp
-                color="black"
-                cursor="pointer"
-                fontSize="23px"
-                fontWeight="bold"
-              />
-            }
-          />
-        </InputGroup>
-        <Box
-          display={hiddenDiv ? "" : "none"}
-          pos={"absolute"}
-          zIndex={"10"}
-          maxH="320px"
-          overflowY={"auto"}
-          borderRadius="0 0 2px 2px"
-          borderTop={"1px solid #e0e0e0"}
-          w="100%"
-          bg="#fff"
-          boxShadow={"2px 3px 5px -1px rgb(0 0 0 / 50%)"}
-        >
-          {data.map((item, index) => (
-            <Box key={index}>
-              <NavLink to={`/searchResult/${item.id}`}>
-                <Flex
-                  gap={2}
-                  p="10px 25px"
-                  m="10px 0"
-                  align={"center"}
-                  cursor="pointer"
-                  _hover={{ bg: "#F5F8FF" }}
+        <div className={styles.userCard}>
+          {user.length > 0 &&
+            user.map((el) => (
+              <div key={el.id} className={styles.container}>
+                <img src={el.avatar} alt={el.first_name} />
+                <h3>Name: {el.first_name + " " + el.last_name}</h3>
+                <p>Email: {el.email}</p>
+                <p>Gender: {el.gender}</p>
+                <p>Domain: {el.domain}</p>
+                <p>Availability: {el.available ? "Available" : "Not-Available"}</p>
+                <button
+                  className={styles.addTeam}
+                  onClick={() => handleAddTeam(el)}
                 >
-                  <Box maxH="32px" w="32px">
-                    <Image maxH="30px" maxW="32px" src={item.avatar} />
-                  </Box>
-                  <Box color={"#212121"}>
-                    {item.first_name + " " + item.last_name}
-                  </Box>
-                </Flex>
-              </NavLink>
-            </Box>
-          ))}
-        </Box>
-      </Box>
+                  Add to Team
+                </button>
+              </div>
+            ))}
 
-      <div className={styles.userCard}>
-        {user.length > 0 &&
-          user.map((el) => (
-            <div key={el.id} className={styles.container}>
-              <img src={el.avatar} alt={el.first_name} />
-              <h3>Name: {el.first_name + " " + el.last_name}</h3>
-              <p>Email: {el.email}</p>
-              <p>Gender: {el.gender}</p>
-              <p>Domain: {el.domain}</p>
-              <p>{el.available}</p>
-              <button onClick={() => handleAddTeam(el)}>Add to Team</button>
-            </div>
-          ))}
 
-        <Pagination
-          total={user?.length}
-          current={page}
-          onChange={(page) => setPage(page)}
-        />
+        </div>
+
       </div>
-    </>
+      <Page
+        total={user?.length}
+        current={page}
+        onChange={(page) => setPage(page)}
+      />
+    </div>
   );
 };
 

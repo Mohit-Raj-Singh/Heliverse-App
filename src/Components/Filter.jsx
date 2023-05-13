@@ -81,7 +81,8 @@ const Filter = () => {
 
         <Divider />
         <Button
-          backgroundColor={"teal"}
+          backgroundColor={"rgb(16, 5, 68)"}
+          color={"white"}
           borderRadius={"10px"}
           padding={"20px 25px"}
           marginTop="50px"

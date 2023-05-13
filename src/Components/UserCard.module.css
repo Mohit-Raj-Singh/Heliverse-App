@@ -4,10 +4,12 @@
   grid-template-rows: auto;
   gap: 20px;
   padding: 20px;
+  
 }
 .container {
   border-radius: 20px;
   padding: 10px;
+  color: rgb(16, 5, 68);
 }
 img {
   margin: auto;
@@ -16,7 +18,7 @@ img {
 }
 
 .addTeam {
-  background-color: black;
+  background-color: rgb(16, 5, 68);
   color: rgb(253, 250, 250);
   border-color: brown;
   padding: 5px 10px;
@@ -26,24 +28,9 @@ img {
 .filterandCards {
   display: flex;
 }
-.nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  width: 100%;
-  border-radius: 15px;
-  height: 75px;
-  position: sticky;
-  top: 0px;
-  bottom: 200px;
-  left: 0px;
-  right: 200px;
-  background-color: brown;
-  color: aliceblue;
-}
+
 .teamButton {
-  background-color: teal;
+  background-color: rgb(16, 5, 68);
   border-radius: 10px;
   padding: 5px 10px;
   color: aliceblue;
@@ -55,7 +42,7 @@ img {
   border: 1px solid black;
 }
 .pageButton {
-  background-color: crimson;
+  background-color: rgb(16, 5, 68);
   padding: 10px;
   /* display: block; */
   margin: 5px 10px;

@@ -94,6 +94,50 @@ const UserCard = () => {
     }
   }, [dispatch, location.search, searchParams, initQuery, page]);
 
+  //Add team
+
+  // let teamArray = JSON.parse(localStorage.getItem("team")) || [];
+  const [team, setTeam] = useState([]);
+  let teamArray = localStorage.getItem("team");
+  useEffect(() => {
+    if (teamArray) {
+      setTeam(JSON.parse(teamArray));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("team", JSON.stringify(team));
+  }, [team]);
+
+  function checkID(alreadyID) {
+    for (let i = 0; i < teamArray.length; i++) {
+      if (teamArray[i].id == alreadyID) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  function returnDomain(checkDomain) {
+    if (teamArray[0].domain == checkDomain) {
+      return true;
+    }
+    return false;
+  }
+
+  const handleAddTeam = (index) => {
+    if (index.available == true) {
+      if(returnDomain){
+      setTeam([...team, index]);
+      alert("ccc");      }
+      setTeam([...team, index]);
+      alert("ccc");
+    } else {
+      alert("not availbale");
+    }
+  };
+
   return (
     <>
       <h2>Users List</h2>
@@ -177,6 +221,7 @@ const UserCard = () => {
               <p>Gender: {el.gender}</p>
               <p>Domain: {el.domain}</p>
               <p>{el.available}</p>
+              <button onClick={() => handleAddTeam(el)}>Add to Team</button>
             </div>
           ))}
 

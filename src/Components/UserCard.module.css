@@ -16,6 +16,11 @@
   margin: auto;
 }
 
+/* button{
+  background-color: black;
+  color: rebeccapurple;
+  border-color: brown;
+} */
 
 
 @media all and (min-width: 651px) and (max-width: 1024px) {

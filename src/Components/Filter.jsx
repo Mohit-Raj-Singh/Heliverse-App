@@ -23,7 +23,8 @@ const Filter = () => {
   const [domain, setDomain] = useState(initDomain || []);
 
   const initAvailable = searchParams.getAll("available");
-  const [available, setAvailable] = useState(initAvailable || []);
+  const [available, setAvailable] = useState(initAvailable || true);
+
 
   const initQuery = searchParams.get("q");
   const [q, setQuery] = useState(initQuery || "");
@@ -37,7 +38,7 @@ const Filter = () => {
   };
 
   const handleAvailable = (el) => {
-    setAvailable(el);
+    setAvailable(el)
   };
 
   useEffect(() => {
@@ -45,6 +46,7 @@ const Filter = () => {
     gender && (params.gender = gender);
     domain && (params.domain = domain);
     available && (params.available = available);
+    // notAvailable && (params.available = notAvailable);
     q && (params.q = q);
     setSearchParams(params);
   }, [
@@ -148,8 +150,8 @@ const Filter = () => {
             defaultValue={available}
           >
             <VStack alignItems={"flex-start"} mt={1} spacing={1}>
-              <Checkbox value={"Sales"}>Available</Checkbox>
-              <Checkbox value={"Finance"}>Not-Available</Checkbox>
+              <Checkbox value={true}>Available</Checkbox>
+              <Checkbox value={false}>Not-Available</Checkbox>
             </VStack>
           </CheckboxGroup>
         </Box>
